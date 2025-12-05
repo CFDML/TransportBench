@@ -42,8 +42,9 @@ function main()
     cd(@__DIR__)
     Kns = collect(0.02:0.01:1.0)
     for i in eachindex(Kns)
-        @info "case $i, Kn = $(Kns[i])"
-        ctr = simulator(Kns[i])
+        Kn = Kns[i]
+        @info "case $i, Kn = $Kn"
+        ctr = simulator(Kn)
         @save "cavity_Kn$(Kn).jld2" ctr
     end
 end
