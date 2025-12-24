@@ -44,15 +44,15 @@ begin
         maxTime=50,
     )
     ps = PSpace2D(0, 1, 50, 0, 1, 50)
-    vs = VSpace2D(-5, 5, 48, -5, 5, 48)
+    vs = VSpace2D(-5, 5, 80, -5, 5, 80)
     gas = Gas(; Kn=0.02, K=1.0)
     ib = IB2F(ib_cavity(set, ps, vs, gas)...)
     ks = SolverSet(set, ps, vs, gas, ib)
 end
 
 cd(@__DIR__)
-#Kns = collect(0.02:0.01:1.0)
-Kns = collect(0.02:0.01:0.07)
+Kns = collect(0.02:0.01:1.0)
+#Kns = collect(0.02:0.01:0.7)
 
 ctrs = []
 for i in eachindex(Kns)
@@ -61,9 +61,16 @@ for i in eachindex(Kns)
     push!(ctrs, ctr)
 end
 
+#using Plots
+#plot(ks, ctrs[1])
+#plot(ks, ctrs[end])
+
 for i in eachindex(Kns)
     Kn = Kns[i]
     h, b, w, P, q = extract_solution(ks, ctrs[i])
     filename = "cavity_Kn$(Kn).npz"
     npzwrite(filename, Dict("h" => h, "b" => b, "w" => w, "P" => P, "q" => q, "Kn" => Kn))
 end
+
+filename = "setup.npz"
+npzwrite(filename, Dict("x" => Array(ps.x), "y" => Array(ps.y), "u" => vs.u, "v" => vs.v))
