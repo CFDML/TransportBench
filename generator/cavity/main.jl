@@ -12,7 +12,7 @@ function simulator(Kn)
         maxTime=50,
     )
     ps = PSpace2D(0, 1, 50, 0, 1, 50)
-    vs = VSpace2D(-5, 5, 48, -5, 5, 48)
+    vs = VSpace2D(-5, 5, 80, -5, 5, 80)
     gas = Gas(; Kn=Kn, K=1.0)
     ib = IB2F(ib_cavity(set, ps, vs, gas)...)
 
