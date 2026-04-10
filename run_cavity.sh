@@ -1,0 +1,1 @@
+nohup julia -t 8 --project=. generator/cavity/main.jl >cavity.log 2>&1 &
