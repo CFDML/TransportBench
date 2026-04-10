@@ -1,0 +1,18 @@
+# Dataset files
+*.pt
+*.h5
+*.mat
+
+# Cache and logs
+__pycache__/
+*.npy
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+
+
+*.png
+*.pdf

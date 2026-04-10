@@ -1,0 +1,21 @@
+# 屏蔽所有任务的数据文件夹
+data/
+*/data/
+*/output/
+
+# 屏蔽所有格式的数据和权重文件
+*.dat
+*.npz
+*.pt
+*.h5
+*.mat
+
+# 屏蔽运行缓存
+__pycache__/
+*.pyc
+*.log
+.vscode/
+.idea/
+.DS_Store
+
+# 注意：不要屏蔽图片和我们想要展示的代码
