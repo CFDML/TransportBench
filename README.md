@@ -29,6 +29,7 @@ Each task directory is fully self-contained. Navigate to any task folder to find
 
 ```bash
 # Example: Evaluate Point Transformer on Task II (Cylinder Flow)
+pip install -r requirements.txt
 cd Task2_Cylinder
 python eval.py --model pt --data_path ./data/cylinder_full_2400.pt
 ```
