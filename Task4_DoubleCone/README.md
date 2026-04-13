@@ -1,168 +1,50 @@
-# Task 4: Double Cone Flow Prediction
+# 🚀 Task IV: Double Cone (Representational Stress Test)
 
-This task focuses on predicting hypersonic flow fields around a double cone geometry using various neural operator architectures.
+This directory contains the codebase for **Task IV**, the ultimate representational stress test of TransportBench. While physically governed by macroscopic continuum mechanics, this Mach-10 hypersonic shock-wave problem pushes neural architectures to their absolute limits through three extreme constraints:
+1. **Extreme Sparsity**: A $17 \times 384$ high-aspect-ratio grid.
+2. **Extreme Few-Shot**: Only 45 training samples available.
+3. **Extreme Gradients**: Severe mathematical discontinuities across the shockwave.
 
-## Pre-trained Models Available ✓
+Crucially, this directory implements an **Ablation Study** to test the "Cure vs. Poison" hypothesis of high-frequency Fourier Feature (FF) injection.
 
-The repository includes pre-trained models ready for evaluation:
+## 📂 Directory Structure
+- `train.py`: Unified script supporting the Curriculum Learning protocol and the `--use_fourier` ablation flag.
+- `eval.py`: Evaluation script that automatically loads the corresponding ablated weights and plots the 1D near-wall pressure distributions.
+- `data_utils.py`: Contains the `GaussianNormalizer` and few-shot data splitting logic.
+- `model_*.py`: Model definitions scaled to the Extreme Regime budget ($\sim$33M parameters), featuring dynamic positional encoding.
+- `checkpoints/`: Directory for pre-trained weights (Note: weights are hosted externally due to GitHub's 100MB file size limit).
 
-| Model | Test Loss | Epoch | Parameters |
-|-------|-----------|-------|------------|
-| FNO | 0.290208 | 1085 | 16.81M |
-| U-Net | 0.328101 | 1952 | 29.67M |
-| ViT | 0.254257 | 1812 | 32.14M |
-| AutoEncoder | 0.273707 | 1030 | 50.05M |
-| DeepONet | 0.277433 | 1246 | 27.93M |
+## 🚀 Quick Start
 
-All models are located in `checkpoints/` directory.
-
-## Quick Start with Pre-trained Models
-
-### 1. Test Checkpoints
-
-Verify all pre-trained models can be loaded:
-
+### 1. Evaluation (Ablation Inference)
+To evaluate the Vanilla configuration (without high-frequency injection):
 ```bash
-python test_checkpoints.py
+python eval.py --model unet
 ```
-
-### 2. Evaluate a Single Model
-
+To evaluate the Fourier Feature injected model:
 ```bash
-python eval_pretrained.py --model fno --num_samples 3
+python eval.py --model unet --use_fourier
 ```
 
-Available models: `fno`, `unet`, `vit`, `ae`, `deeponet`
-
-### 3. Evaluate All Models
-
+### 2. Training (with Curriculum Protocol)
+Train the Vanilla model:
 ```bash
-python eval_all.py
+python train.py --model unet --lr 1e-3
 ```
-
-### 4. Generate Comparison Plots
-
+Train with Fourier Feature injection:
 ```bash
-python plot_results.py
+python train.py --model unet --lr 1e-3 --use_fourier
 ```
 
-This creates:
-- Model performance comparison bar chart
-- Performance summary table with all metrics
+## 🏆 Performance Overview (Pressure Field Rel $L_2$ Error)
+The results shatter the myth that explicit high-frequency injection is a universal cure. **Local receptive fields (U-Net) naturally dominate sharp shock capturing**, while Fourier injection acts as a double-edged sword, triggering severe Gibbs phenomena or non-physical noise in global models.
 
-## Dataset
-
-- Input: 5 channels [x_coord, y_coord, Ma, Tv, Re] - Shape: [N, 5, 17, 384]
-- Output: 4 channels [rho, u, v, p] - Shape: [N, 4, 17, 384]
-- Total samples: 51 cases (45 train / 6 test)
-- Data path: `DoubleCone_Benchmark/Data/processed/double_cone_dataset_with_physics.pt`
-
-## Models
-
-All models are located in the root directory:
-
-- `model_fno.py` - Fourier Neural Operator
-- `model_unet.py` - U-Net with skip connections
-- `model_vit.py` - Vision Transformer
-- `model_ae.py` - Convolutional AutoEncoder
-- `model_deeponet.py` - DeepONet with Fourier encoding
-- `model_pt.py` - Point Latent Transformer
-
-## Training New Models (Optional)
-
-If you want to train models from scratch:
-
-### Train a single model:
-
-```bash
-python train.py --model fno --epochs 3000 --batch_size 8 --lr 5e-4
+| Model | Vanilla (No FF) | With Fourier Feature (+FF) |
+| :--- | :--- | :--- |
+| **U-Net** | **12.3% (SOTA)** | 15.0% *(Micro-noise introduced)* |
+| DeepONet | 16.6% *(Smoothed shocks)*| 21.1% *(Uncontrollable noise)* |
+| FNO | 17.6% *(Lost features)*| 17.1% *(Severe Gibbs oscillations)* |
+| AutoEncoder | 26.2% | 20.1% |
+| ViT | 31.9% | 23.8% |
+| Point Trans. | 42.9% | 54.6% *(Catastrophic Aliasing)* |
 ```
-
-Available models: `fno`, `unet`, `vit`, `ae`, `deeponet`
-
-Note: Point Transformer (pt) checkpoint is not available in the pre-trained set.
-
-### Train all models:
-
-```bash
-python train_all.py
-```
-
-This will train all 6 models sequentially with default hyperparameters.
-
-## Evaluation
-
-### Using Pre-trained Models (Recommended)
-
-Evaluate pre-trained models directly:
-
-```bash
-python eval_pretrained.py --model fno --num_samples 3
-```
-
-### Evaluate a single model:
-
-```bash
-python eval.py --model fno --num_samples 3
-```
-
-### Evaluate all models:
-
-```bash
-python eval_all.py
-```
-
-## Visualization
-
-Generate comparison plots for all pre-trained models:
-
-```bash
-python plot_results.py
-```
-
-This creates:
-- Model performance comparison bar chart
-- Performance summary table
-
-For training history curves (requires training from scratch):
-
-```bash
-python plot_comparison.py
-```
-
-This creates:
-- Training/test loss curves comparison
-- Final metrics bar chart
-- Performance summary table
-
-## Key Features
-
-- Fourier feature encoding for high-frequency shock wave capture
-- Curriculum learning with delayed weight scheduling (starts at epoch 800)
-- OneCycleLR scheduler with 40% warmup period
-- Weighted loss focusing on wall boundaries and pressure
-- Log10 transform for pressure channel
-- Gradient clipping for stability
-
-## Directory Structure
-
-```
-Task4_DoubleCone/
-├── model_*.py           # Model architectures
-├── data_loader.py       # Dataset and normalization
-├── train.py            # Single model training
-├── train_all.py        # Train all models
-├── eval.py             # Single model evaluation
-├── eval_all.py         # Evaluate all models
-├── plot_comparison.py  # Generate comparison plots
-├── checkpoints/        # Saved model weights
-├── output/            # Evaluation visualizations
-└── DoubleCone_Benchmark/  # Original data and experiments
-```
-
-## Notes
-
-- Pressure channel undergoes log10 transformation before training
-- Models save only after epoch 1000 to avoid early overfitting
-- Curriculum learning gradually increases weights for wall boundaries and pressure
-- All models use Fourier encoding to capture shock discontinuities
