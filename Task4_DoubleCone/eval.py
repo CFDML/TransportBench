@@ -4,7 +4,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
-from data_utils import GaussianNormalizer
+from data_loader import GaussianNormalizer
 from model_deeponet import DeepONet2d
 from model_fno import FNO2d
 from model_unet import FluidUNet
@@ -19,7 +19,8 @@ def get_args():
                         help='Choose the model to evaluate')
     parser.add_argument('--no_fourier', action='store_true',
                         help='Model does not use Fourier encoding')
-    parser.add_argument('--data_path', type=str, required=True, help='Path to dataset')
+    parser.add_argument('--data_path', type=str, default='./data/double_cone_dataset_with_physics.pt', 
+                        help='Path to dataset')
     parser.add_argument('--checkpoint', type=str, default='./checkpoints/best_model_{}.pth', 
                         help='Path format to checkpoint')
     parser.add_argument('--sample_idx', type=int, default=50, 
