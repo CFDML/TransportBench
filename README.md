@@ -51,12 +51,12 @@ Through rigorous ablation studies, TransportBench reveals that:
 If you find TransportBench useful in your research, please consider citing our work. *(The full citation will be updated upon publication).*
 
 ```bibtex
-@article{transportbench,
+@article{TransportBench,
   title={TransportBench: A Comprehensive Benchmark for Non-Equilibrium Gas Transport},
   author={Wang, Xu and Li, Minghao and Xiao, Tianbai and others},
   journal={arXiv preprint (Under Review)},
   year={2026}
 }
 
-## 🤝 Acknowledgments
+🤝 Acknowledgments
 This work is supported by the Chinese Academy of Sciences and the University of Chinese Academy of Sciences. We extend our gratitude to the developers of the SPARTA DSMC solver and the open-source SciML community.
