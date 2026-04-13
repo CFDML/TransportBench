@@ -1,18 +1,14 @@
-# 1. 坚决忽略数据集文件夹及数据文件 (防爆仓核心)
 data/
 *.npz
 *.pt
 *.h5
 *.mat
 
-# 2. 忽略 Python 运行缓存
 __pycache__/
 *.pyc
 
-# 3. 忽略训练可能产生的日志文件
 *.log
 
-# 4. 忽略本地 IDE 的配置文件 (保持云端纯净)
 .vscode/
 .idea/
 .DS_Store
