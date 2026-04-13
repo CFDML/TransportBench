@@ -46,3 +46,17 @@ Through rigorous ablation studies, TransportBench reveals that:
 1. **Local Receptive Fields Triumph:** Grid-based convolutions (U-Net) absolutely dominate extreme shock-capturing tasks without spreading errors globally.
 2. **The Double-Edged Sword of Fourier Features:** Explicit high-frequency injection acts as a vital cure for attention models but introduces severe non-physical noise and Gibbs oscillations in spectral/latent architectures.
 3. **Micro-Macro Scale Bridge:** Operator learners (e.g., DeepONet) implicitly reconstruct high-dimensional microscopic kinetic distortions solely from macroscopic observables.
+
+## 📝 Citation
+If you find TransportBench useful in your research, please consider citing our work. *(The full citation will be updated upon publication).*
+
+```bibtex
+@article{transportbench,
+  title={TransportBench: A Comprehensive Benchmark for Non-Equilibrium Gas Transport},
+  author={Wang, Xu and Li, Minghao and Xiao, Tianbai and others},
+  journal={arXiv preprint (Under Review)},
+  year={2026}
+}
+
+## 🤝 Acknowledgments
+This work is supported by the Chinese Academy of Sciences and the University of Chinese Academy of Sciences. We extend our gratitude to the developers of the SPARTA DSMC solver and the open-source SciML community.
