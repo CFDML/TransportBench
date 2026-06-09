@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class BoltzmannDeepONet(nn.Module):
-    def __init__(self, branch_dim, trunk_dim, hidden_dim=128, num_outputs=4, depth=3, activation='GELU'):
+    def __init__(self, branch_dim, trunk_dim, hidden_dim=280, num_outputs=4, depth=5, activation='GELU'):
         super().__init__()
         
         # 1. Select activation function
