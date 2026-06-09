@@ -60,7 +60,7 @@ def main():
     elif args.model == 'ae':
         model = AutoEncoder(in_channels=3, out_channels=4, base_dim=24)
     elif args.model == 'deeponet':
-        model = BoltzmannDeepONet(branch_dim=674, trunk_dim=2, hidden_dim=128, num_outputs=4)
+        model = BoltzmannDeepONet(branch_dim=674, trunk_dim=2, hidden_dim=280, num_outputs=4)
     elif args.model == 'pt':
         model = PointTransformerONet(hidden_dim=256, num_outputs=4)
     
